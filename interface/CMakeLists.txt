@@ -18,10 +18,14 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(action_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/MyMsg.msg"
   "srv/MissionRequest.srv"
+  "action/Navigate.action"
+  "srv/CreatePlan.srv"
   DEPENDENCIES geometry_msgs
 )
 
