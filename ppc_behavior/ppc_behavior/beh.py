@@ -45,7 +45,7 @@ class my_behavioral (Node):
         request = CreatePlan.Request()
         request.target_pose = msg
 
-        future = self.create_plan_client.call_async(request)
+        future = self.ser.call_async(request)
         future.add_done_callback(self.handle_plan_response)
 
 

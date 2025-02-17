@@ -63,12 +63,14 @@ class my_action(Node):
         dy = goal_y - self.current_y
         desired_yaw = math.atan2(dy, dx)
 
+        start_time = self.get_clock().now().nanoseconds / 1e9
+
         while rclpy.ok():
             error = desired_yaw - self.current_yaw
 
             error = (error + math.pi) % (2 * math.pi) - math.pi  
 
-            if abs(error) < 0.087:
+            if abs(error) < 0.087 :             
                 break
 
             twist = Twist()
@@ -87,6 +89,24 @@ class my_action(Node):
         dx = goal_pose.position.x - self.current_x
         dy = goal_pose.position.y - self.current_y
         return math.sqrt(dx**2 + dy**2)
+    
+    def move_to_waypoint(self, pose):
+
+        while rclpy.ok():
+            distance = self.calculate_distance(pose)
+
+            self.get_logger().info(f"Distance to goal: {distance}")
+
+            twist = Twist()
+
+            if distance > 0.1:  
+                twist.linear.x = 0.5 
+            else:
+                twist.linear.x = 0.0  
+                break  
+
+            self.cmd_vel_pub.publish(twist)
+            rclpy.spin_once(self, timeout_sec=0.1)
 
 def main(args = None):
     rclpy.init(args=args)

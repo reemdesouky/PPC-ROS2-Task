@@ -9,8 +9,7 @@ class my_service(Node):
     def __init__(self):
         super().__init__('global_planner')
         self.ser= self.create_service(CreatePlan, '/create_plan' , self.callback)
-        self.sub_odom = self.create_subscription(Odometry , '/odom' , self.sub_callback)
-
+        self.sub_odom = self.create_subscription(Odometry , '/odom' , self.sub_callback, 10)
         self.current_pose = Pose()
 
     def sub_callback(self, msg): 
